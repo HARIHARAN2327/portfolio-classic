@@ -1,0 +1,221 @@
+/* portfolio.css
+   Standalone CSS for PortfolioClone component
+   - Make sure this file is imported in the TSX file (import "./portfolio.css")
+*/
+
+/* 1) Load fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@400;600&display=swap');
+
+/* 2) Design tokens */
+:root{
+  --bg: #000;
+  --fg: #fff;
+  --muted: #9ca3af;
+  --card-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  --radius-md: 0.75rem;
+
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  --font-display: 'Playfair Display', serif;
+}
+
+/* 3) Base resets */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body, #root { height: 100%; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* selection */
+::selection { background: #fff; color: #000; }
+
+/* 4) Top-level wrapper */
+.portfolio-root {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  position: relative;
+}
+
+/* 5) Scroll container (tall so sticky works) */
+.portfolio-container {
+  position: relative;
+  width: 100%;
+  height: 200vh; /* give enough scroll distance for the pinned animation */
+}
+
+/* inner relative context */
+.portfolio-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* 6) Sticky wrapper that pins the viewport area */
+.sticky-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* decorative only */
+}
+
+/* The sticky element that centers the image in the viewport.
+   top:50% + translateY(-50%) keeps it vertically centered while pinned */
+.sticky-center {
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* 7) Background blur layer (animated by Framer Motion inline styles) */
+.bg-blur-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: transparent;
+  pointer-events: none;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  will-change: opacity, backdrop-filter;
+}
+
+/* 8) Image container and styles */
+.image-outer { z-index: 30; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+
+.image-box {
+  position: relative;
+  width: 280px;
+  height: 380px;
+  overflow: hidden;
+  filter: grayscale(100%);
+  border-radius: var(--radius-md);
+  background: #111;
+  box-shadow: var(--card-shadow);
+}
+
+/* larger sizes on medium screens */
+@media (min-width: 768px) {
+  .image-box { width: 380px; height: 520px; }
+}
+
+/* actual img */
+.image-element {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* gradient overlay constrained to image-box */
+.image-gradient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.0) 45%, rgba(0,0,0,0.2) 100%);
+}
+
+/* 9) Hero title (first headline) */
+/* Positioned absolute so it moves independent of sticky image */
+.hero-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 25%;
+  z-index: 40;
+  text-align: center;
+  padding: 0 1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 30px;
+}
+
+/* on medium screens use display font and bigger size */
+@media (min-width: 768px) {
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: 3.5rem; /* ~56px */
+  }
+}
+
+/* 10) Text 2 wrapper (centered big text) */
+.text2-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+  mix-blend-mode: screen;
+}
+
+.text2-inner { transform: translateY(0); }
+
+/* word styles */
+.word-start {
+  display: block;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--fg);
+  font-size: 48px;
+}
+
+.word-playing {
+  display: block;
+  color: #e5e7eb;
+  font-family: var(--font-display);
+  font-size: 28px;
+}
+
+/* larger screens for the big headline */
+@media (min-width: 768px) {
+  .word-start { font-size: 96px; }
+  .word-playing { font-size: 56px; }
+}
+
+/* 11) Next content section after hero */
+.next-section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  color: var(--muted);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  z-index: 10;
+}
+
+/* 12) Accessibility / focus */
+:focus { outline: none; }
+
+:focus-visible {
+  outline: 3px solid rgba(255,255,255,0.12);
+  outline-offset: 4px;
+}
+
+/* 13) Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .bg-blur-layer { transition: none !important; animation: none !important; }
+  .hero-title, .text2-wrapper, .image-box, .image-gradient { transition: none !important; animation: none !important; will-change: auto !important; }
+}
